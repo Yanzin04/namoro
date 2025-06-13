@@ -2,6 +2,7 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pedido Especial</title>
   <style>
     body {
@@ -13,12 +14,17 @@
       justify-content: center;
       height: 100vh;
       margin: 0;
+      /* Impede a rolagem da página quando o botão foge */
+      overflow: hidden; 
+      padding: 20px;
+      box-sizing: border-box;
     }
 
     h1 {
       color: #d63384;
       font-size: 2.5rem;
       margin-bottom: 40px;
+      text-align: center; /* Garante que o texto fique bom se quebrar a linha */
     }
 
     .buttons {
@@ -43,7 +49,7 @@
     #nao {
       background-color: #dc3545;
       color: white;
-      position: absolute;
+      position: absolute; /* Essencial para a mágica acontecer */
     }
 
     #mensagem {
@@ -51,7 +57,25 @@
       font-size: 1.5rem;
       color: #6f42c1;
       font-weight: bold;
+      text-align: center;
     }
+
+    /* Media Query para telas menores (celulares) */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem; /* Diminui a fonte do título */
+      }
+      
+      #mensagem {
+        font-size: 1.2rem; /* Diminui a fonte da mensagem final */
+      }
+
+      button {
+        padding: 12px 25px; /* Diminui um pouco os botões */
+        font-size: 16px;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -69,16 +93,27 @@
     const btnSim = document.getElementById('sim');
     const mensagem = document.getElementById('mensagem');
 
-    btnNao.addEventListener('mouseover', () => {
-      const largura = window.innerWidth - btnNao.offsetWidth;
-      const altura = window.innerHeight - btnNao.offsetHeight;
-      const x = Math.random() * largura;
-      const y = Math.random() * altura;
+    // Função para mover o botão. Reutilizável e mais limpa.
+    const moverBotaoNao = () => {
+      // Usamos clientWidth/clientHeight para ser mais preciso no mobile
+      const larguraTela = document.body.clientWidth - btnNao.offsetWidth;
+      const alturaTela = document.body.clientHeight - btnNao.offsetHeight;
+      
+      const x = Math.random() * larguraTela;
+      const y = Math.random() * alturaTela;
+
       btnNao.style.left = `${x}px`;
       btnNao.style.top = `${y}px`;
-    });
+    };
+
+    // Adiciona os dois eventos: um para o mouse (desktop) e um para o toque (mobile)
+    btnNao.addEventListener('mouseover', moverBotaoNao);
+    btnNao.addEventListener('touchstart', moverBotaoNao); // <-- A MUDANÇA PRINCIPAL!
 
     btnSim.addEventListener('click', () => {
+      // Esconde os botões e mostra a mensagem
+      btnSim.style.display = 'none';
+      btnNao.style.display = 'none';
       mensagem.textContent = "Parabéns, você está namorando o Yan! 💖";
     });
   </script>
