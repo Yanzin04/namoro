@@ -14,7 +14,6 @@
       justify-content: center;
       height: 100vh;
       margin: 0;
-      /* Impede a rolagem da página quando o botão foge */
       overflow: hidden; 
       padding: 20px;
       box-sizing: border-box;
@@ -24,12 +23,16 @@
       color: #d63384;
       font-size: 2.5rem;
       margin-bottom: 40px;
-      text-align: center; /* Garante que o texto fique bom se quebrar a linha */
+      text-align: center;
     }
 
+    /* --- MUDANÇA PRINCIPAL NO CSS --- */
     .buttons {
-      display: flex;
-      gap: 20px;
+      display: flex; /* Alinha os botões */
+      justify-content: center; /* Centraliza eles no espaço */
+      align-items: center;
+      gap: 20px; /* Espaço entre os botões */
+      width: 100%; /* Ocupa a largura para centralizar bem */
     }
 
     button {
@@ -39,6 +42,7 @@
       border-radius: 10px;
       cursor: pointer;
       transition: all 0.2s;
+      /* O botão "Não" não começa mais com position:absolute */
     }
 
     #sim {
@@ -49,7 +53,6 @@
     #nao {
       background-color: #dc3545;
       color: white;
-      position: absolute; /* Essencial para a mágica acontecer */
     }
 
     #mensagem {
@@ -60,19 +63,24 @@
       text-align: center;
     }
 
-    /* Media Query para telas menores (celulares) */
-    @media (max-width: 768px) {
+    /* --- AJUSTE PARA CELULAR (RESPONSIVIDADE) --- */
+    @media (max-width: 480px) {
       h1 {
-        font-size: 2rem; /* Diminui a fonte do título */
+        font-size: 2rem;
+      }
+      
+      /* Em telas pequenas, os botões ficam um embaixo do outro */
+      .buttons {
+        flex-direction: column;
       }
       
       #mensagem {
-        font-size: 1.2rem; /* Diminui a fonte da mensagem final */
+        font-size: 1.2rem;
       }
 
       button {
-        padding: 12px 25px; /* Diminui um pouco os botões */
-        font-size: 16px;
+        width: 80%; /* Faz os botões terem uma largura agradável */
+        max-width: 250px;
       }
     }
 
@@ -92,10 +100,16 @@
     const btnNao = document.getElementById('nao');
     const btnSim = document.getElementById('sim');
     const mensagem = document.getElementById('mensagem');
+    const buttonsDiv = document.querySelector('.buttons');
 
-    // Função para mover o botão. Reutilizável e mais limpa.
     const moverBotaoNao = () => {
-      // Usamos clientWidth/clientHeight para ser mais preciso no mobile
+      // --- MUDANÇA PRINCIPAL NO JAVASCRIPT ---
+      // Ativa o modo "fugitivo" na primeira interação
+      if (btnNao.style.position !== 'absolute') {
+        btnNao.style.position = 'absolute';
+      }
+      
+      // O restante da lógica para mover continua a mesma
       const larguraTela = document.body.clientWidth - btnNao.offsetWidth;
       const alturaTela = document.body.clientHeight - btnNao.offsetHeight;
       
@@ -106,14 +120,12 @@
       btnNao.style.top = `${y}px`;
     };
 
-    // Adiciona os dois eventos: um para o mouse (desktop) e um para o toque (mobile)
     btnNao.addEventListener('mouseover', moverBotaoNao);
-    btnNao.addEventListener('touchstart', moverBotaoNao); // <-- A MUDANÇA PRINCIPAL!
+    btnNao.addEventListener('touchstart', moverBotaoNao, { passive: true }); // passive:true melhora a performance em mobile
 
     btnSim.addEventListener('click', () => {
-      // Esconde os botões e mostra a mensagem
-      btnSim.style.display = 'none';
-      btnNao.style.display = 'none';
+      // Esconde o container dos botões para sumir com ambos
+      buttonsDiv.style.display = 'none';
       mensagem.textContent = "Parabéns, você está namorando o Yan! 💖";
     });
   </script>
