@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Pedido Especial</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #ffe6f0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    h1 {
+      color: #d63384;
+      font-size: 2.5rem;
+      margin-bottom: 40px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 20px;
+    }
+
+    button {
+      padding: 15px 30px;
+      font-size: 18px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    #sim {
+      background-color: #28a745;
+      color: white;
+    }
+
+    #nao {
+      background-color: #dc3545;
+      color: white;
+      position: absolute;
+    }
+
+    #mensagem {
+      margin-top: 30px;
+      font-size: 1.5rem;
+      color: #6f42c1;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Quer namorar comigo?</h1>
+
+  <div class="buttons">
+    <button id="sim">Sim</button>
+    <button id="nao">Não</button>
+  </div>
+
+  <p id="mensagem"></p>
+
+  <script>
+    const btnNao = document.getElementById('nao');
+    const btnSim = document.getElementById('sim');
+    const mensagem = document.getElementById('mensagem');
+
+    btnNao.addEventListener('mouseover', () => {
+      const largura = window.innerWidth - btnNao.offsetWidth;
+      const altura = window.innerHeight - btnNao.offsetHeight;
+      const x = Math.random() * largura;
+      const y = Math.random() * altura;
+      btnNao.style.left = `${x}px`;
+      btnNao.style.top = `${y}px`;
+    });
+
+    btnSim.addEventListener('click', () => {
+      mensagem.textContent = "Parabéns, você está namorando o Yan! 💖";
+    });
+  </script>
+</body>
+</html>
